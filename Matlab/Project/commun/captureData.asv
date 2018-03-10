@@ -1,0 +1,68 @@
+function data=captureData(vid_color, vid_depth)
+
+    framesPerTrig  = 20;
+ 
+    
+    depthSource = getselectedsource(vid_depth);
+    depthSource.EnableBodyTracking = 'on';
+
+    src_depth = getselectedsource (vid_depth);
+
+
+    vid_color.FramesPerTrigger = framesPerTrig ;
+    vid_depth.FramesPerTrigger = framesPerTrig ;
+    triggerRepeat = 1;
+
+    vid_color.TriggerRepeat = triggerRepeat;
+    vid_depth.TriggerRepeat = triggerRepeat;
+
+    triggerconfig ([vid_color, vid_depth], 'manual');
+
+    start ([vid_color, vid_depth]);
+
+   
+    for i = 1: triggerRepeat
+        trigger ([vid_color, vid_depth ])
+        [img_color, ts_color, metaData_Color] = getdata (vid_color);
+        [img_depth, ts_depth, metaData_Depth] = getdata (vid_depth);
+    end
+    
+%                data = struct('color', [], 'depth', [], 'depth_meta', []);
+%            data = struct('color', img_color, 'depth', img_depth(:,:,1,2), 'depth_meta', []);
+   assignin('base','img_depth',img_depth);   
+
+%            size(img_depth)
+%     ts_color
+%     ts_depth
+%     metaData_Depth
+%     metaData_Color
+%     size(metaData_Depth)
+    
+    
+%     for i=1:1 %size(metaData_Depth, 1)
+%        metadata = metaData_Depth(i);
+%        anyBodiesTracked = any(metadata.IsBodyTracked ~= 0) 
+%        
+% %        if 1==anyBodiesTracked
+% %            siizze = size(metadata)
+% %            hoho = img_color(i, 1)
+%            data = struct('color', img_color, 'depth', img_depth(:,:,1,i), 'depth_meta', metadata);
+% 
+% 
+% %            break;
+% %        end
+%     end
+%     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+end
+
